@@ -1,0 +1,292 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ALPHAHOUND — $HOUND</title><link rel="icon" href="hound_logo.png"><meta property="og:title" content="ALPHAHOUND ($HOUND)"><meta property="og:description" content="The first token on Robinhood built with Claude Fable."><meta property="og:image" content="hound_logo.png"></head><body><style>
+  :root{
+    --ink:#100C07; --ink2:#1A130B; --line:#2A2013;
+    --gold:#E8B04B; --gold-deep:#C8912F; --ignite:#FF5A3C;
+    --bone:#F3ECDD; --ash:#9A8E78; --ash-dim:#6E6350;
+    --ground:var(--ink); --raise:var(--ink2); --text:var(--bone); --muted:var(--ash);
+    --accent:var(--gold); --hair:var(--line);
+    --maxw:1040px;
+    --mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --ground:#EFE7D6; --raise:#F6F0E3; --text:#241C10; --muted:#6B5F49;
+      --accent:#B07C1E; --hair:#D9CDB4; }
+  }
+  :root[data-theme="dark"]{ --ground:#100C07; --raise:#1A130B; --text:#F3ECDD; --muted:#9A8E78; --accent:#E8B04B; --hair:#2A2013; }
+  :root[data-theme="light"]{ --ground:#EFE7D6; --raise:#F6F0E3; --text:#241C10; --muted:#6B5F49; --accent:#B07C1E; --hair:#D9CDB4; }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--text);font-family:var(--sans);
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  a{color:inherit}
+  h1,h2,h3{text-wrap:balance;margin:0}
+  .mono{font-family:var(--mono)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent)}
+  .tnum{font-variant-numeric:tabular-nums}
+
+  /* ---------- top bar ---------- */
+  .bar{display:flex;align-items:center;justify-content:space-between;
+    padding:20px 24px;max-width:var(--maxw);margin:0 auto}
+  .brand{font-family:var(--mono);font-weight:700;letter-spacing:.12em;font-size:15px}
+  .brand b{color:var(--accent)}
+  .bar .tick{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.1em}
+
+  /* ---------- first-badge ---------- */
+  .firstbadge{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
+    border:1px solid var(--accent);border-radius:999px;padding:8px 16px;margin-bottom:22px;
+    background:color-mix(in srgb,var(--accent) 8%,transparent)}
+  .firstbadge .fdot{width:7px;height:7px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 0 0 var(--accent);animation:fpulse 2.4s ease-out infinite}
+  @keyframes fpulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 70%,transparent)}
+    70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  @media (prefers-reduced-motion: reduce){ .firstbadge .fdot{animation:none} }
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:56px 0 40px}
+  #scope{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.9}
+  .hero .wrap{position:relative;z-index:1}
+  .kick{font-family:var(--mono);font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:22px}
+  .kick b{color:var(--accent)}
+  h1.title{font-family:var(--mono);font-weight:700;letter-spacing:-.01em;line-height:1.02;
+    font-size:clamp(44px,8.5vw,92px)}
+  h1.title .tk{color:var(--accent)}
+  .lede{font-size:clamp(17px,2.2vw,21px);color:var(--text);max-width:60ch;margin:26px 0 0;opacity:.92}
+  .lede b{color:var(--accent);font-weight:600}
+  .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+  .btn{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    padding:13px 22px;border-radius:2px;text-decoration:none;border:1px solid var(--accent);
+    transition:transform .15s ease,background .15s ease}
+  .btn.solid{background:var(--accent);color:var(--ground);font-weight:700}
+  .btn.ghost{color:var(--accent)}
+  .btn:hover{transform:translateY(-2px)}
+  .btn:focus-visible{outline:2px solid var(--ignite);outline-offset:3px}
+
+  /* ---------- readout strip ---------- */
+  .readout{border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin-top:52px}
+  .readout .grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .cell{padding:26px 22px;border-left:1px solid var(--hair)}
+  .cell:first-child{border-left:0}
+  .cell .n{font-family:var(--mono);font-size:clamp(26px,3.4vw,38px);font-weight:700;color:var(--accent);
+    line-height:1;font-variant-numeric:tabular-nums}
+  .cell .l{font-size:12.5px;color:var(--muted);margin-top:9px;letter-spacing:.02em}
+  @media(max-width:720px){.readout .grid{grid-template-columns:repeat(2,1fr)}
+    .cell:nth-child(3){border-left:0} .cell{border-top:1px solid var(--hair)} .cell:nth-child(-n+2){border-top:0}}
+
+  /* ---------- sections ---------- */
+  section{padding:74px 0}
+  .sechead{max-width:62ch;margin-bottom:40px}
+  .sechead h2{font-family:var(--mono);font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-.01em;margin-top:12px}
+  .sechead p{color:var(--muted);font-size:16px;margin:14px 0 0}
+
+  .panels{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--hair);
+    border:1px solid var(--hair)}
+  .panel{background:var(--ground);padding:30px}
+  .panel .idx{font-family:var(--mono);font-size:12px;color:var(--ignite);letter-spacing:.18em}
+  .panel h3{font-family:var(--mono);font-size:18px;margin:14px 0 10px;letter-spacing:.01em}
+  .panel p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.62}
+  .panel .tag{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:11.5px;
+    color:var(--accent);border:1px solid var(--hair);padding:4px 9px;border-radius:2px;letter-spacing:.04em}
+  @media(max-width:720px){.panels{grid-template-columns:1fr}}
+
+  /* ---------- pipeline ---------- */
+  .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair)}
+  .step{background:var(--ground);padding:20px 16px}
+  .step .s{font-family:var(--mono);font-size:11px;color:var(--ignite);letter-spacing:.14em}
+  .step .t{font-family:var(--mono);font-size:13.5px;margin-top:10px;color:var(--text);line-height:1.35}
+  .step .d{font-size:12px;color:var(--muted);margin-top:6px}
+  @media(max-width:820px){.flow{grid-template-columns:repeat(2,1fr)}}
+
+  /* ---------- spec sheet ---------- */
+  .spec{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:start}
+  .sheet{border:1px solid var(--hair);border-radius:3px;overflow:hidden}
+  .sheet .row{display:flex;justify-content:space-between;gap:16px;padding:15px 20px;border-top:1px solid var(--hair);
+    font-family:var(--mono);font-size:13.5px}
+  .sheet .row:first-child{border-top:0}
+  .sheet .row .k{color:var(--muted);letter-spacing:.03em}
+  .sheet .row .v{color:var(--text);text-align:right;font-variant-numeric:tabular-nums}
+  .sheet .row .v.hi{color:var(--accent)}
+  .clean{background:var(--raise);border:1px solid var(--hair);border-radius:3px;padding:24px;font-family:var(--mono);font-size:13px;color:var(--muted);line-height:1.9}
+  .clean b{color:var(--text)} .clean .ok{color:var(--gold)} .clean .no{color:var(--ignite)}
+  @media(max-width:820px){.spec{grid-template-columns:1fr;gap:28px}}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--hair);padding:44px 0 60px;margin-top:20px}
+  .fnote{color:var(--muted);font-size:12.5px;max-width:74ch;line-height:1.7}
+  .fbrand{font-family:var(--mono);letter-spacing:.1em;font-size:14px;margin-bottom:18px}
+  .fbrand b{color:var(--accent)}
+  .madewith{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;
+    color:var(--muted);border:1px solid var(--hair);padding:6px 12px;border-radius:2px;margin-top:20px;letter-spacing:.04em}
+  .madewith .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+  @media (prefers-reduced-motion: reduce){ #scope{display:none} .btn{transition:none} }
+</style>
+
+<div class="bar">
+  <div class="brand">ALPHA<b>HOUND</b></div>
+  <div class="tick mono">ROBINHOOD CHAIN · 4663 · $HOUND</div>
+</div>
+
+<header class="hero">
+  <canvas id="scope" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="firstbadge"><span class="fdot"></span>The first token on Robinhood built with Claude Fable</div>
+    <div class="kick">On-chain alpha engine · <b>Robinhood Chain</b></div>
+    <h1 class="title">Smart money<br>moves first.<br><span class="tk">Now you see it.</span></h1>
+    <p class="lede">ALPHAHOUND is an on-chain alpha engine for Robinhood Chain. It fingerprints the wallets that quietly accumulate every token that later runs past $1M, then counts how many are buying <b>right now</b> — turning a crowd of proven early-buyer wallets into a single number you can act on.</p>
+    <div class="cta">
+      <a class="btn solid" href="https://click-edinburgh-bell-los.trycloudflare.com" target="_blank">Watch it hunt live →</a>
+      <a class="btn ghost" href="#token">$HOUND spec</a>
+    </div>
+  </div>
+</header>
+
+<div class="readout">
+  <div class="wrap" style="padding:0">
+    <div class="grid">
+      <div class="cell"><div class="n tnum">7,819</div><div class="l">early-buyer wallets indexed</div></div>
+      <div class="cell"><div class="n tnum">31</div><div class="l">$1M+ runners reverse-engineered</div></div>
+      <div class="cell"><div class="n tnum">5s</div><div class="l">peak tracking · Multicall3, zero burst</div></div>
+      <div class="cell"><div class="n tnum">≥25</div><div class="l">convergence = golden-dog signal</div></div>
+    </div>
+  </div>
+</div>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="eyebrow">The Edge</div>
+      <h2>Not another chart scanner. A wallet-convergence engine.</h2>
+      <p>Most tools watch price. ALPHAHOUND watches <em>who is buying</em>. Every runner on this chain was accumulated early by the same recurring cast of wallets — we mapped all of them on-chain and made their agreement a number you can read at a glance.</p>
+    </div>
+    <div class="panels">
+      <div class="panel">
+        <div class="idx">01 · CONVERGENCE</div>
+        <h3>Ambush Convergence</h3>
+        <p>For any token, we pull its recent on-chain buyers and intersect them with 7,819 wallets that historically bought golden dogs early. The count is the signal: ≥10 is strong, ≥25 is golden-dog grade.</p>
+        <span class="tag">$1 · convergence 48 · flagged pre-run</span>
+      </div>
+      <div class="panel">
+        <div class="idx">02 · TOP HUNTER</div>
+        <h3>Top-Hunter Override</h3>
+        <p>Four wallets have caught more $1M runners than anyone else. When one of them steps into a token — even a tiny 40-buyer pool — that alone flags it, before the crowd math can catch up.</p>
+        <span class="tag">small pools scored by rate, not raw count</span>
+      </div>
+      <div class="panel">
+        <div class="idx">03 · IGNITION</div>
+        <h3>Ignition Detection</h3>
+        <p>Pumps show up on-chain as buy-volume bursts. We bucket the pool by block and flag the moment recent buying spikes past 3× its own average — read from the same data, no extra RPC.</p>
+        <span class="tag">runners ignite every ~1–4 min while pumping</span>
+      </div>
+      <div class="panel">
+        <div class="idx">04 · MAKERS</div>
+        <h3>Market-Maker Map</h3>
+        <p>43 verified EOA market makers seed liquidity across multiple runners before the crowd arrives. Contracts and routers get filtered out first — infrastructure is not a signal.</p>
+        <span class="tag">13 recur across 2+ blue chips</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--raise)">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="eyebrow">The Loop</div>
+      <h2>From feed to paper-verified P&amp;L, every 30 seconds.</h2>
+      <p>The engine runs nonstop and grades itself with paper trades on the exact rules — take your principal back at 2×, then ride the free bag with a tracked exit — so the edge is proven forward, not just backtested.</p>
+    </div>
+    <div class="flow">
+      <div class="step"><div class="s">01</div><div class="t">Scan feed</div><div class="d">15–80K mcap, wash-filtered</div></div>
+      <div class="step"><div class="s">02</div><div class="t">Convergence</div><div class="d">buyers ∩ 7,819</div></div>
+      <div class="step"><div class="s">03</div><div class="t">Grade</div><div class="d">🎯 / 🔥 / ✅</div></div>
+      <div class="step"><div class="s">04</div><div class="t">Log entry mcap</div><div class="d">your buyable price</div></div>
+      <div class="step"><div class="s">05</div><div class="t">Track peak</div><div class="d">Multicall3, live 5s</div></div>
+      <div class="step"><div class="s">06</div><div class="t">Take back at 2×</div><div class="d">then ride free bag</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="token">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="eyebrow">$HOUND</div>
+      <h2>A token with nothing to hide in the bytecode.</h2>
+      <p>The contract is the minimal-trust template: fixed supply minted once, no owner, no mint, no blacklist, no dynamic tax. Nothing in it can freeze your sell or print new supply.</p>
+    </div>
+    <div class="spec">
+      <div class="sheet">
+        <div class="row"><span class="k">Name</span><span class="v">AlphaHound</span></div>
+        <div class="row"><span class="k">Ticker</span><span class="v hi">$HOUND</span></div>
+        <div class="row"><span class="k">Chain</span><span class="v">Robinhood Chain · 4663</span></div>
+        <div class="row"><span class="k">Standard</span><span class="v">ERC-20 · 18 decimals</span></div>
+        <div class="row"><span class="k">Supply</span><span class="v tnum">1,000,000,000</span></div>
+        <div class="row"><span class="k">Mint after deploy</span><span class="v">None — immutable</span></div>
+        <div class="row"><span class="k">Owner / admin keys</span><span class="v">None</span></div>
+        <div class="row"><span class="k">Status</span><span class="v hi">Design · not yet on mainnet</span></div>
+      </div>
+      <div>
+        <div class="clean">
+<b>// contract surface</b><br>
+<span class="ok">✓</span> transfer / transferFrom<br>
+<span class="ok">✓</span> approve / allowance<br>
+<span class="ok">✓</span> fixed totalSupply (immutable)<br>
+<span class="no">✗</span> owner / onlyOwner<br>
+<span class="no">✗</span> mint / setFee / blacklist<br>
+<span class="no">✗</span> pause / upgradeable proxy<br>
+</div>
+        <p style="color:var(--muted);font-size:13.5px;margin:18px 0 0;line-height:1.65">
+          The same clean footprint the engine looks for when it clears a token — a bytecode length that can't hide a back door. Full source ships with the project (<span class="mono">AlphaHound.sol</span>).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fbrand">ALPHA<b>HOUND</b> — on-chain alpha</div>
+    <span class="madewith"><span class="dot"></span>made with Claude Fable</span>
+    <p class="fnote" style="margin-top:26px">
+      <b style="color:var(--text)">Honest disclaimer.</b> ALPHAHOUND is a research tool and $HOUND is a design in progress — it is not deployed to mainnet, and this page raises no funds. Nothing here is financial advice or a promise of return. On-chain data shows the base rate is brutal: the overwhelming majority of tokens go to zero, and reaching $1M is a fraction of a percent. Convergence is an edge, not a guarantee. Only trade what you can afford to lose. “Claude Fable” is credited as the tool used to build this work — it does not imply endorsement by Anthropic.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var c=document.getElementById('scope');if(!c)return;
+  var mq=window.matchMedia('(prefers-reduced-motion: reduce)');if(mq.matches){c.style.display='none';return;}
+  var x=c.getContext('2d'),W,H,DPR=Math.min(window.devicePixelRatio||1,2);
+  function accent(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#E8B04B';}
+  function size(){W=c.clientWidth;H=c.clientHeight;c.width=W*DPR;H=c.height=H*DPR;c.width=W*DPR;x.setTransform(DPR,0,0,DPR,0,0);}
+  var dots=[];
+  function seed(){dots=[];var n=Math.min(64,Math.floor(W/16));for(var i=0;i<n;i++){var a=Math.random()*Math.PI*2,r=Math.max(W,H)*(.35+Math.random()*.5);dots.push({a:a,r:r,rr:r,sp:.0006+Math.random()*.0016,tw:Math.random()*6.28});}}
+  function loop(t){
+    var w=c.clientWidth,h=c.clientHeight;x.clearRect(0,0,w,h);
+    var cx=w*.72,cy=h*.42;if(w<720){cx=w*.5;cy=h*.5;}
+    var col=accent();
+    // target ring
+    x.globalAlpha=.5;x.strokeStyle=col;x.lineWidth=1;
+    for(var k=0;k<3;k++){x.beginPath();x.arc(cx,cy,26+k*22+(Math.sin(t*.001+k)*3),0,6.2832);x.stroke();}
+    x.globalAlpha=1;
+    for(var i=0;i<dots.length;i++){var d=dots[i];
+      d.r-=d.r*d.sp* (0.6+0.8*Math.sin(t*0.0002+i));
+      if(d.r<34){d.r=d.rr;d.a=Math.random()*Math.PI*2;}
+      var px=cx+Math.cos(d.a)*d.r/DPR, py=cy+Math.sin(d.a)*d.r/DPR;
+      var near=1-Math.min(1,(d.r/DPR)/(Math.max(w,h)*.5));
+      x.globalAlpha=.12+near*.6;
+      x.fillStyle=col;var s=1+near*1.6;
+      x.beginPath();x.arc(px,py,s,0,6.2832);x.fill();
+      if(near>.55){x.globalAlpha=(near-.55)*.5;x.strokeStyle=col;x.lineWidth=.5;
+        x.beginPath();x.moveTo(px,py);x.lineTo(cx,cy);x.stroke();}
+    }
+    x.globalAlpha=1;
+    requestAnimationFrame(loop);
+  }
+  function boot(){size();seed();}
+  window.addEventListener('resize',boot);boot();requestAnimationFrame(loop);
+})();
+</script>
+</body></html>
